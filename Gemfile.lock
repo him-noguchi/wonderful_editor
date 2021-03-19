@@ -73,6 +73,7 @@ GEM
     byebug (11.1.3)
     case_transform (0.2)
       activesupport
+    choice (0.2.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.8)
     crass (1.0.6)
@@ -163,6 +164,11 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
+    rails-erd (1.6.1)
+      activerecord (>= 4.2)
+      activesupport (>= 4.2)
+      choice (~> 0.2.0)
+      ruby-graphviz (~> 1.2)
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
     railties (6.0.3.5)
@@ -216,6 +222,8 @@ GEM
     rubocop-rspec (2.2.0)
       rubocop (~> 1.0)
       rubocop-ast (>= 1.1.0)
+    ruby-graphviz (1.2.5)
+      rexml
     ruby-progressbar (1.11.0)
     spring (2.1.1)
     spring-watcher-listen (2.0.1)
@@ -271,9 +279,11 @@ DEPENDENCIES
   pry-rails
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.4)
+  rails-erd
   rspec-rails
   rubocop-rails
   rubocop-rspec
+  ruby-graphviz
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)

@@ -31,6 +31,7 @@ gem "bootsnap", ">= 1.4.2", require: false
 gem "active_model_serializers", "~> 0.10.0"
 gem "devise"
 gem "devise_token_auth"
+gem "ruby-graphviz"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -55,6 +56,7 @@ group :development do
   gem "spring-watcher-listen", "~> 2.0.0"
   # wodeful_editor
   gem "annotate"
+  gem "rails-erd"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
