@@ -21,7 +21,7 @@
 #
 FactoryBot.define do
   factory :comment do
-    body { Faker::String.random(length: 3..140) }
+    body { Faker::String.random(length: 3..100) }
     user
     article
   end
