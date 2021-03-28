@@ -39,10 +39,9 @@ RSpec.describe Comment, type: :model do
     end
   end
 
-  context "bodyが140字以上のとき" do
+  context "bodyが100字以上のとき" do
     it "コメント作成に失敗する" do
-      comment = build(:comment,
-                      body: "あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ")
+      comment = build(:comment, body: "あああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ")
       expect(comment).to be_invalid
       # expect(comment.errors.details[:body][0][:error]).to eq :too_long
     end
