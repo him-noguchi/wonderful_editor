@@ -19,8 +19,8 @@
 #
 FactoryBot.define do
   factory :article do
-    title { "MyString" }
-    body { "MyText" }
-    user { nil }
+    title { Faker::String.random(length: 3..30) }
+    body { Faker::Quote.yoda }
+    user
   end
 end
