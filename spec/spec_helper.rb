@@ -92,7 +92,7 @@ RSpec.configure do |config|
   #   # as the one that triggered the failure.
   #   Kernel.srand config.seed
 
-  #テストが失敗しても全てのテストを実行してくれる
+  # テストが失敗しても全てのテストを実行してくれる
   config.define_derived_metadata do |meta|
     meta[:aggregate_failures] = true unless meta.has_key?(:aggregate_failures)
   end
