@@ -71,3 +71,7 @@ RSpec/NestedGroups:
 # ブロックの方が見た目がスッキリして見やすいので、どちらでもお好きにどうぞ。
 RSpec/ReturnFromStub:
   Enabled: false
+
+# テストの項目数を5個まで許可
+RSpec/MultipleExpectations:
+  Max: 5
