@@ -74,4 +74,7 @@ RSpec/ReturnFromStub:
 
 # テストの項目数を5個まで許可
 RSpec/MultipleExpectations:
-  Max: 5
+  Max: 10
+
+RSpec/ExampleLength:
+  Max: 15
