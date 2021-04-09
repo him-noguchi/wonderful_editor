@@ -49,7 +49,7 @@ RSpec.describe "Articles", type: :request do
   end
 
   describe "POST /articles" do
-    subject { post(api_v1_articles_path, params: params)}
+    subject { post(api_v1_articles_path, params: params) }
 
     context "適切なパラメータを送信したとき" do
       let(:current_user) { create(:user) }
@@ -60,7 +60,7 @@ RSpec.describe "Articles", type: :request do
         allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
       end
 
-      fit "記事が作成される" do
+      it "記事が作成される" do
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title]
@@ -95,5 +95,4 @@ RSpec.describe "Articles", type: :request do
       end
     end
   end
-
 end
