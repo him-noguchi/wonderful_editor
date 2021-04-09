@@ -12,21 +12,14 @@ module Api::V1
     end
 
     def create
-      @article = Article.new(
-        title: article_params[:title],
-        body: article_params[:body],
-         user_id: current_user.id
-        )
-
-      @article.save!
-
-      render json: @article, each_serializer: Api::V1::ArticleSerializer
+      article = current_user.articles.create!(article_params)
+      render json: article, serializer: Api::V1::ArticleSerializer
     end
 
     private
 
       def article_params
-        params.require(:article).permit(:title, :body).merge(user_id: current_user.id)
+        params.require(:article).permit(:title, :body)
       end
 
   end

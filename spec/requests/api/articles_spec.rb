@@ -52,16 +52,16 @@ RSpec.describe "Articles", type: :request do
     subject { post(api_v1_articles_path, params: params)}
 
     context "適切なパラメータを送信したとき" do
-      let!(:current_user) { create(:user) }
+      let(:current_user) { create(:user) }
       let(:params) do
         { article: attributes_for(:article) }
       end
       before do
-        allow_any_instance_of(Api::V1::ArticlesController).to receive(:current_user).and_return(current_user)
+        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
       end
 
-      it "記事が作成される" do
-        expect { subject }.to change { Article.count }.by(1)
+      fit "記事が作成される" do
+        expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title]
         expect(res["body"]).to eq params[:article][:body]
@@ -70,10 +70,10 @@ RSpec.describe "Articles", type: :request do
     end
 
     context "不適切なパラメータを送信したとき" do
-      let!(:current_user) { create(:user) }
+      let(:current_user) { create(:user) }
       let(:params) { attributes_for(:article) }
       before do
-        allow_any_instance_of(Api::V1::ArticlesController).to receive(:current_user).and_return(current_user)
+        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
       end
 
       it "記事作成に失敗する" do
@@ -87,7 +87,7 @@ RSpec.describe "Articles", type: :request do
         { article: attributes_for(:article) }
       end
       before do
-        allow_any_instance_of(Api::V1::ArticlesController).to receive(:current_user).and_return(current_user)
+        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
       end
 
       it "記事作成に失敗する" do
