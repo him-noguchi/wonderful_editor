@@ -19,7 +19,7 @@
 #
 FactoryBot.define do
   factory :article do
-    title { Faker::Number.number(20) }
+    title { Faker::Lorem.word }
     body { Faker::Quote.yoda }
     user
   end
