@@ -24,7 +24,6 @@ module Api::V1
     def destroy
       article = current_user.articles.find(params[:id])
       article.destroy!
-      render json: article, serializer: Api::V1::ArticleSerializer
     end
 
     private
