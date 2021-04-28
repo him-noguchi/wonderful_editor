@@ -60,20 +60,20 @@ RSpec.describe "Api::V1::Auth::Sessions", type: :request do
     subject { delete(destroy_api_v1_user_session_path, headers: headers) }
 
     context "ログアウトに必要な情報を送信したとき" do
-      let(:user) { create(:user)}
+      let(:user) { create(:user) }
       let!(:headers) { user.create_new_auth_token }
       it "ログアウトできる" do
-        expect{ subject }.to change { user.reload.tokens }.from(be_present).to(be_blank)
+        expect { subject }.to change { user.reload.tokens }.from(be_present).to(be_blank)
         expect(response).to have_http_status(:ok)
       end
     end
 
     context "誤った情報を送信したとき" do
-      let(:user) { create(:user)}
-      let!(:headers) { { "access-token"=> "", "token-type"=>"", "client"=>"", "expiry"=>"", "uid"=>""} }
-      fit "ログアウトできない" do
+      let(:user) { create(:user) }
+      let!(:headers) { { "access-token" => "", "token-type" => "", "client" => "", "expiry" => "", "uid" => "" } }
+      it "ログアウトできない" do
         subject
-        expect(response).to have_http_status(404)
+        expect(response).to have_http_status(:not_found)
         res = JSON.parse(response.body)
         expect(res["errors"]).to include("User was not found or was not logged in.")
       end
