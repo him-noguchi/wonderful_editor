@@ -49,18 +49,17 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "POST /articles" do
-    subject { post(api_v1_articles_path, params: params) }
+    subject { post(api_v1_articles_path, params: params, headers: headers) }
 
     context "適切なパラメータを送信したとき" do
       let(:current_user) { create(:user) }
-      let(:params) do
-        { article: attributes_for(:article) }
-      end
-      before do
-        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
-      end
+      let(:params) { { article: attributes_for(:article) } }
+      let(:headers) { current_user.create_new_auth_token }
+      # before do
+      #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
+      # end
 
-      it "記事が作成される" do
+      fit "記事が作成される" do
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title]
@@ -72,9 +71,10 @@ RSpec.describe "Api::V1::Articles", type: :request do
     context "不適切なパラメータを送信したとき" do
       let(:current_user) { create(:user) }
       let(:params) { attributes_for(:article) }
-      before do
-        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
-      end
+      let(:headers) { current_user.create_new_auth_token }
+      # before do
+      #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
+      # end
 
       it "記事作成に失敗する" do
         expect { subject }.to raise_error(ActionController::ParameterMissing)
@@ -83,27 +83,30 @@ RSpec.describe "Api::V1::Articles", type: :request do
 
     context "ログインしていないとき" do
       let!(:current_user) { nil }
-      let(:params) do
-        { article: attributes_for(:article) }
-      end
-      before do
-        allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
-      end
+      let(:params) { { article: attributes_for(:article) } }
+      let(:headers) { { "access-token" => "", "token-type" => "", "client" => "", "expiry" => "", "uid" => "" } }
+
+      # before do
+      #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
+      # end
 
       it "記事作成に失敗する" do
-        expect { subject }.to raise_error(NoMethodError)
+        expect{ subject }.to change { Article.count }.by(0)
+        res = JSON.parse(response.body)
+        expect(res["errors"]).to include("You need to sign in or sign up before continuing.")
       end
     end
   end
 
   describe "PATCH /articles/:id" do
-    subject { patch(api_v1_article_path(article.id), params: params) }
+    subject { patch(api_v1_article_path(article.id), params: params, headers: headers) }
 
     let(:params) { { article: attributes_for(:article) } }
     let(:current_user) { create(:user) }
-    before do
-      allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
-    end
+    let(:headers) { current_user.create_new_auth_token }
+    # before do
+    #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
+    # end
 
     context "自分が所持している記事のレコードを更新しようとしたとき" do
       let(:article) { create(:article, user: current_user) }
@@ -127,12 +130,14 @@ RSpec.describe "Api::V1::Articles", type: :request do
   end
 
   describe "DELETE /articles/:id" do
-    subject { delete(api_v1_article_path(article.id)) }
+    subject { delete(api_v1_article_path(article.id), headers: headers) }
 
     let(:current_user) { create(:user) }
-    before do
-      allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
-    end
+    let(:headers) { current_user.create_new_auth_token }
+
+    # before do
+    #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
+    # end
 
     context "自分が所持している記事を削除しようとしたとき" do
       let!(:article) { create(:article, user: current_user) }
