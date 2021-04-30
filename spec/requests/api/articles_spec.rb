@@ -59,7 +59,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       #   allow_any_instance_of(Api::V1::BaseApiController).to receive(:current_user).and_return(current_user)
       # end
 
-      fit "記事が作成される" do
+      it "記事が作成される" do
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
         expect(res["title"]).to eq params[:article][:title]
@@ -91,7 +91,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       # end
 
       it "記事作成に失敗する" do
-        expect{ subject }.to change { Article.count }.by(0)
+        expect { subject }.to change { Article.count }.by(0)
         res = JSON.parse(response.body)
         expect(res["errors"]).to include("You need to sign in or sign up before continuing.")
       end
