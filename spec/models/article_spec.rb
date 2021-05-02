@@ -4,6 +4,7 @@
 #
 #  id         :bigint           not null, primary key
 #  body       :text
+#  status     :integer          default("draft"), not null
 #  title      :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
@@ -24,8 +25,9 @@ RSpec.describe Article, type: :model do
 
   context "タイトル・ボディが存在するとき" do
     let(:article) { build(:article) }
-    it "記事が作られる" do
+    it "下書き用の記事が作られる" do
       expect(article).to be_valid
+      expect(article.status).to eq "draft"
     end
   end
 
@@ -60,4 +62,28 @@ RSpec.describe Article, type: :model do
       # expect(article.errors.details[:title][0][:error]).to eq :too_long
     end
   end
+
+  context "statusが0のとき" do
+    let(:article) { build(:article, :draft) }
+    it "下書きとして保存できる" do
+      expect(article).to be_valid
+      expect(article.status).to eq "draft"
+    end
+  end
+
+  context "statusが1のとき" do
+    let(:article) { build(:article, :published) }
+    it "公開用として保存できる" do
+      expect(article).to be_valid
+      expect(article.status).to eq "published"
+
+    end
+  end
+
+  # context "statusが空のとき" do
+  #   let(:article) { build(:article, status: nil) }
+  #   it "記事を保存できない" do
+  #     expect(article).to be_invalid
+  #   end
+  # end
 end
