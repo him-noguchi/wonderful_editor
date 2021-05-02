@@ -76,7 +76,6 @@ RSpec.describe Article, type: :model do
     it "公開用として保存できる" do
       expect(article).to be_valid
       expect(article.status).to eq "published"
-
     end
   end
 
