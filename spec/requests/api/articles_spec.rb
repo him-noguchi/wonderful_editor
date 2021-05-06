@@ -65,14 +65,12 @@ RSpec.describe "Api::V1::Articles", type: :request do
     let(:current_user) { create(:user) }
     let(:headers) { current_user.create_new_auth_token }
 
-
     context "適切なパラメータを送信したとき（公開用）" do
       let(:params) { { article: attributes_for(:article, :published) } }
 
       it "公開用の記事が作成される" do
         expect { subject }.to change { Article.where(user_id: current_user.id).count }.by(1)
         res = JSON.parse(response.body)
-        binding.pry
         expect(res["title"]).to eq params[:article][:title]
         expect(res["body"]).to eq params[:article][:body]
         expect(response).to have_http_status(:ok)
@@ -124,7 +122,7 @@ RSpec.describe "Api::V1::Articles", type: :request do
       it "記事を公開用として更新できる" do
         expect { subject }.to change { article.reload.title }.from(article.title).to(params[:article][:title]) &
                               change { article.reload.body }.from(article.body).to(params[:article][:body]) &
-                              change { article.reload.status}.from(article.status).to(params[:article][:status].to_s)
+                              change { article.reload.status }.from(article.status).to(params[:article][:status].to_s)
         expect(response).to have_http_status(:ok)
       end
     end
