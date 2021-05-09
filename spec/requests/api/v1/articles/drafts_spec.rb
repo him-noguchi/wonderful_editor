@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Articles::Drafts", type: :request do
   let(:current_user) { create(:user) }
@@ -10,7 +10,7 @@ RSpec.describe "Api::V1::Articles::Drafts", type: :request do
 
     let!(:article1) { create(:article, :draft, user: current_user) }
     let!(:article2) { create(:article, :draft, user: current_user) }
-    before { create(:article, :published, user: current_user) }
+    let!(:article3) { create(:article, :published, user: current_user) }
     before { create(:article, :draft) }
 
     it "自分が作成した下書き一覧が取得できる" do
@@ -22,7 +22,6 @@ RSpec.describe "Api::V1::Articles::Drafts", type: :request do
       expect(res[0].keys).to eq ["id", "title", "updated_at", "user"]
       expect(res[0]["user"].keys).to eq ["id", "name", "email"]
     end
-
   end
 
   describe "GET /article/draft" do
