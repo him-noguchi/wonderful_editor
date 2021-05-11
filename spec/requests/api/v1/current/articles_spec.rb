@@ -1,4 +1,4 @@
-require 'rails_helper'
+require "rails_helper"
 
 RSpec.describe "Api::V1::Current::Articles", type: :request do
   describe "GET api/v1//current/articles" do
@@ -16,7 +16,7 @@ RSpec.describe "Api::V1::Current::Articles", type: :request do
         create(:article, :published)
       end
 
-      fit "自分が書いた公開用の記事の一覧のみ取得できる" do
+      it "自分が書いた公開用の記事の一覧のみ取得できる" do
         subject
         res = JSON.parse(response.body)
         expect(response).to have_http_status(:ok)
@@ -25,7 +25,6 @@ RSpec.describe "Api::V1::Current::Articles", type: :request do
         expect(res[0]["user"]["id"]).to eq current_user.id
         expect(res[0]["user"]["name"]).to eq current_user.name
         expect(res[0]["user"]["email"]).to eq current_user.email
-
       end
     end
   end
